@@ -5,6 +5,7 @@ namespace Merkle;
 class Tree{
 
 	private $nodes;
+	private $leaf_nodes;
 	private $func;
 
 	public function __construct(\Closure $func){
