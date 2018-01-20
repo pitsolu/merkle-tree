@@ -45,6 +45,8 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 		while(is_array($tree))
 			$tree = reset($tree);
 
+		$tree = $tree->getTree();
+
 		$this->assertTrue(count($tree) == 1);
 	}
 
