@@ -48,12 +48,10 @@ $transactions = array(
     )
 );
 
-Merkle\Tree::hashFunc(function($data){
+$merkleTree = new Merkle\Tree(function($data){
 
     return hash("sha256", hash("sha256", $data));
 });
-
-$merkleTree = new Merkle\Tree();
 // foreach($transactions as $name=>$trx)
 //     $tree = $merkleTree->add(new Merkle\Leaf($trx));
 

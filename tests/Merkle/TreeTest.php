@@ -13,7 +13,7 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 		$this->courier = sha1("Shiply");
 		$this->exchange = sha1("Coinbase");
 
-		Tree::hashFunc(function($data){
+		$this->merkleTree = new Tree(function($data){
 
 			return hash("sha256", hash("sha256", $data));
 		});
@@ -23,21 +23,19 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 
 		$hash = hash("sha256", hash("sha256", "p@55w0rd"));
 
-		$this->assertEquals($hash, Tree::doHash("p@55w0rd"));
+		$this->assertEquals($hash, $this->merkleTree->doHash("p@55w0rd"));
 	}
 
 	public function testNoDuplicatesAtLeafInsertion(){
 
-		$merkleTree = new Tree();
-
-		$merkleTree->add(new Leaf(array(
+		$this->merkleTree->add(new Leaf(array(
 
 			"sender"=>$this->customer,
 			"recipient"=>$this->retailer,
 			"amount"=>5
 		)));
 
-		$tree = $merkleTree->add(new Leaf(array(
+		$tree = $this->merkleTree->add(new Leaf(array(
 
 			"sender"=>$this->customer,
 			"recipient"=>$this->retailer,
@@ -71,16 +69,15 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 			)
 		);
 
-		$merkleTree = new Tree();
 		foreach($transactions as $trx)
-			$tree = $merkleTree->add($leaf = new Leaf($trx));
+			$tree = $this->merkleTree->add($leaf = new Leaf($trx));
 
 		$tree = end($tree);
 		end($tree);
 		$lastTreeNodeHash = key($tree);
 
-		$lastLeafHash = $leaf->getHash();
+		$lastLeafHash = $this->merkleTree->doHash((string)$leaf);
 
-		$this->assertTrue($lastTreeNodeHash == Tree::doHash(str_repeat($lastLeafHash, 2)));
+		$this->assertTrue($lastTreeNodeHash == $this->merkleTree->doHash(str_repeat($lastLeafHash, 2)));
 	}
 }

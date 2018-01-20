@@ -5,29 +5,23 @@ namespace Merkle;
 class Tree{
 
 	private $nodes;
-	private static $func = null;
+	private $func;
 
-	public function __construct(){
+	public function __construct(\Closure $func){
 
 		$this->nodes = [];
+
+		$this->hashRefl = new \ReflectionFunction($func);
 	}
 
-	public static function hashFunc(\Closure $func){
+	public function doHash($data){
 
-		self::$func = new \ReflectionFunction($func);
-	}
-
-	public static function doHash($data){
-
-		if(is_null(self::$func))
-			throw new \Exception("Merkle Tree hash function must be set first!");
-
-		return self::$func->invoke($data);
+		return $this->hashRefl->invoke($data);
 	}
 
 	public function add(Leaf $data){
 
-		$this->leaf_nodes[$data->getHash()] = $data;
+		$this->leaf_nodes[$this->doHash((string)$data)] = $data;
 
 		$this->nodes = $this->leaf_nodes;
 

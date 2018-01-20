@@ -10,16 +10,15 @@ class Leaf{
 	public function __construct(Array $data){
 
 		$this->data = $data;
-		$this->hash = Tree::doHash(json_encode($data));
-	}
-
-	public function getHash(){
-
-		return $this->hash;
 	}
 
 	public function getData(){
 
 		return $this->data;
+	}
+
+	public function __toString(){
+
+		return json_encode($this->data);
 	}
 }
