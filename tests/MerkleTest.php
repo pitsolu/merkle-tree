@@ -95,7 +95,7 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 			$next = $tree->hash();
 			$branches[] = $next;
 			
-			if($prev == $next){
+			if($prev == $next){//hashing limit attained
 
 				$this->assertTrue(true);
 				break;
