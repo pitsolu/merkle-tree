@@ -61,6 +61,6 @@ $tree = $merkleTree->getTree();
 
 // print_r($tree);
 
-echo(key($tree));
+echo(key($tree)); //merle root
 
 ```
