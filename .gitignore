@@ -1,0 +1,5 @@
+test.php
+test2.php
+php_errors.log
+..gitignore.swp
+vendor/
