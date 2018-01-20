@@ -20,11 +20,11 @@ $transactions = array(
 
         "sender"=>$customer,
         "recipient"=>$retailer,
-        "amount"=>100
+        "amount"=>110
     ),
     "w/h-tax"=>array(
 
-        "sender"=>$customer,
+        "sender"=>$retailer,
         "recipient"=>$taxman,
         "amount"=>10
     ),
