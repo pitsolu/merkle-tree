@@ -53,40 +53,42 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 	public function testHashingLimit(){
 
 		$transactions = array(
-			"purchase"=>new Leaf(array(
+
+			"purchase"=>array(
 
 				"sender"=>$this->customer,
 				"recipient"=>$this->retailer,
 				"amount"=>100
-			)),
-			"w/h-tax"=>new Leaf(array(
+			),
+			"w/h-tax"=>array(
 
 				"sender"=>$this->customer,
 				"recipient"=>$this->taxman,
 				"amount"=>10
-			)),
-			"commission"=>new Leaf(array(
+			),
+			"commission"=>array(
 
 				"sender"=>$this->customer,
 				"recipient"=>$this->merchant,
 				"amount"=>5
-			)),
-			"freight"=>new Leaf(array(
+			),
+			"freight"=>array(
 
 				"sender"=>$this->customer,
 				"recipient"=>$this->courier,
 				"amount"=>5
-			)),
-			"trx-fees"=>new Leaf(array(
+			),
+			"trx-fees"=>array(
 
 				"sender"=>$this->customer,
 				"recipient"=>$this->exchange,
 				"amount"=>1
-			)));
+			)
+		);
 
 		$tree = new Tree();
 		foreach($transactions as $name=>$trx)
-			$tree->add($trx);
+			$tree->add(new Leaf($trx));
 
 		$branches[] = $tree->hash();
 		while(true){

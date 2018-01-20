@@ -20,40 +20,42 @@ Merkle\Tree::hashFunc(function($data){
 });
 
 $transactions = array(
-"purchase"=>new Merkle\Leaf(array(
 
-    "sender"=>$customer,
-    "recipient"=>$retailer,
-    "amount"=>100
-)),
-"w/h-tax"=>new Merkle\Leaf(array(
+    "purchase"=>array(
 
-    "sender"=>$customer,
-    "recipient"=>$taxman,
-    "amount"=>10
-)),
-"commission"=>new Merkle\Leaf(array(
+        "sender"=>$customer,
+        "recipient"=>$retailer,
+        "amount"=>100
+    ),
+    "w/h-tax"=>array(
 
-    "sender"=>$customer,
-    "recipient"=>$merchant,
-    "amount"=>5
-)),
-"freight"=>new Merkle\Leaf(array(
+        "sender"=>$customer,
+        "recipient"=>$taxman,
+        "amount"=>10
+    ),
+    "commission"=>array(
 
-    "sender"=>$customer,
-    "recipient"=>$courier,
-    "amount"=>5
-)),
-"trx-fees"=>new Merkle\Leaf(array(
+        "sender"=>$customer,
+        "recipient"=>$merchant,
+        "amount"=>5
+    ),
+    "freight"=>array(
 
-    "sender"=>$customer,
-    "recipient"=>$exchange,
-    "amount"=>1
-)));
+        "sender"=>$customer,
+        "recipient"=>$courier,
+        "amount"=>5
+    ),
+    "trx-fees"=>array(
+
+        "sender"=>$customer,
+        "recipient"=>$exchange,
+        "amount"=>1
+    )
+);
 
 $merkleTree = new Merkle\Tree();
 foreach($transactions as $name=>$trx)
-    $merkleTree->add($trx);
+    $merkleTree->add(new Merkle\Leaf($trx));
 
 $tree = $merkleTree->getTree();
 
