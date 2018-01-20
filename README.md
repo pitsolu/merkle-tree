@@ -59,7 +59,7 @@ foreach($transactions as $name=>$trx)
 
 $tree = $merkleTree->getTree();
 
-// print_r($tree);
+// print_r($tree); //merkle tree
 
 echo(key($tree)); //merle root
 
