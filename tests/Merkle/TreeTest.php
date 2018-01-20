@@ -26,28 +26,67 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 		$this->assertEquals($hash, Tree::doHash("p@55w0rd"));
 	}
 
-	public function testNoDuplicates(){
+	public function testNoDuplicatesAtLeafInsertion(){
 
-		$tree = new Tree();
-		$tree->add(new Leaf(array(
-
-			"sender"=>$this->customer,
-			"recipient"=>$this->retailer,
-			"amount"=>5
-		)));
-		$tree->add(new Leaf(array(
+		$merkleTree = new Tree();
+		$merkleTree->add(new Leaf(array(
 
 			"sender"=>$this->customer,
 			"recipient"=>$this->retailer,
 			"amount"=>5
 		)));
+		$merkleTree->add(new Leaf(array(
 
-		while(is_array($tree))
-			$tree = reset($tree);
+			"sender"=>$this->customer,
+			"recipient"=>$this->retailer,
+			"amount"=>5
+		)));
 
-		$tree = $tree->getTree();
+		while(is_array($merkleTree))
+			$merkleTree = reset($merkleTree);
+
+		$tree = $merkleTree->getTree();
 
 		$this->assertTrue(count($tree) == 1);
+	}
+
+	public function testReuseHashOnLastUnevenTransaction(){
+
+		$transactions = array(
+
+			array(
+
+				"sender"=>$this->customer,
+				"recipient"=>$this->retailer,
+				"amount"=>100
+			),
+			array(
+
+				"sender"=>$this->customer,
+				"recipient"=>$this->taxman,
+				"amount"=>10
+			),
+			array(
+
+				"sender"=>$this->customer,
+				"recipient"=>$this->merchant,
+				"amount"=>5
+			)
+		);
+
+		$merkleTree = new Tree();
+		foreach($transactions as $trx)
+			$merkleTree->add($leaf = new Leaf($trx));
+
+		$tree = $merkleTree->hash();
+
+		end($tree);
+
+		$lastTreeNodeHash = key($tree);
+
+		$lastLeafHash = $leaf->getHash();
+
+		$this->assertTrue($lastTreeNodeHash == Tree::doHash(str_repeat($lastLeafHash, 2)));
 	}
 
 	public function testHashingLimit(){
@@ -86,15 +125,15 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 			)
 		);
 
-		$tree = new Tree();
+		$merkleTree = new Tree();
 		foreach($transactions as $name=>$trx)
-			$tree->add(new Leaf($trx));
+			$merkleTree->add(new Leaf($trx));
 
-		$branches[] = $tree->hash();
+		$branches[] = $merkleTree->hash();
 		while(true){
 
 			$prev = end($branches);
-			$next = $tree->hash();
+			$next = $merkleTree->hash();
 			$branches[] = $next;
 			
 			if($prev == $next){//hashing limit attained
