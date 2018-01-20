@@ -1,1 +1,23 @@
-{}
+{
+	"name": "pitsolu/merkle-tree",
+    "description": "Merkle Tree",
+    "license": "MIT",
+    "authors": [
+        
+        {
+            "name": "Moderator",
+            "email": "pitsolu@gmail.com"
+        }
+    ],
+    "require": {
+
+    	"php": ">=7.0"
+    },
+    "autoload": {
+        
+        "psr-0": {
+
+            "Strukt\\": "src/"
+        }
+    }
+}
