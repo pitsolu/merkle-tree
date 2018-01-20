@@ -14,11 +14,6 @@ $taxman = sha1("Revenue Authority");
 $courier = sha1("Shiply");
 $exchange = sha1("Coinbase");
 
-Merkle\Tree::hashFunc(function($data){
-
-    return hash("sha256", hash("sha256", $data));
-});
-
 $transactions = array(
 
     "purchase"=>array(
@@ -52,6 +47,11 @@ $transactions = array(
         "amount"=>1
     )
 );
+
+Merkle\Tree::hashFunc(function($data){
+
+    return hash("sha256", hash("sha256", $data));
+});
 
 $merkleTree = new Merkle\Tree();
 foreach($transactions as $name=>$trx)
