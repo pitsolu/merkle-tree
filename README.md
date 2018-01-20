@@ -54,10 +54,14 @@ Merkle\Tree::hashFunc(function($data){
 });
 
 $merkleTree = new Merkle\Tree();
-foreach($transactions as $name=>$trx)
-    $merkleTree->add(new Merkle\Leaf($trx));
+// foreach($transactions as $name=>$trx)
+//     $tree = $merkleTree->add(new Merkle\Leaf($trx));
 
-$tree = $merkleTree->getTree();
+$tree = $merkleTree->add(new Merkle\Leaf($transactions["purchase"]));
+$tree = $merkleTree->add(new Merkle\Leaf($transactions["w/h-tax"]));
+$tree = $merkleTree->add(new Merkle\Leaf($transactions["commission"]));
+$tree = $merkleTree->add(new Merkle\Leaf($transactions["freight"]));
+$tree = $merkleTree->add(new Merkle\Leaf($transactions["trx-fees"]));
 
 // print_r($tree); //merkle tree
 

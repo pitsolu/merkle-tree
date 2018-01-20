@@ -27,7 +27,11 @@ class Tree{
 
 	public function add(Leaf $data){
 
-		$this->nodes[$data->getHash()] = $data;
+		$this->leaf_nodes[$data->getHash()] = $data;
+
+		$this->nodes = $this->leaf_nodes;
+
+		return $this->build();
 	}
 
 	public function hash(){
@@ -68,10 +72,5 @@ class Tree{
 			$this->hash();
 
 		return $this->nodes;
-	}
-
-	public function getTree(){
-
-		return $this->build();
 	}
 }

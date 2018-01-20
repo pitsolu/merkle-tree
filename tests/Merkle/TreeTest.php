@@ -29,23 +29,20 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 	public function testNoDuplicatesAtLeafInsertion(){
 
 		$merkleTree = new Tree();
+
 		$merkleTree->add(new Leaf(array(
 
 			"sender"=>$this->customer,
 			"recipient"=>$this->retailer,
 			"amount"=>5
 		)));
-		$merkleTree->add(new Leaf(array(
+
+		$tree = $merkleTree->add(new Leaf(array(
 
 			"sender"=>$this->customer,
 			"recipient"=>$this->retailer,
 			"amount"=>5
 		)));
-
-		while(is_array($merkleTree))
-			$merkleTree = reset($merkleTree);
-
-		$tree = $merkleTree->getTree();
 
 		$this->assertTrue(count($tree) == 1);
 	}
@@ -76,71 +73,14 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 
 		$merkleTree = new Tree();
 		foreach($transactions as $trx)
-			$merkleTree->add($leaf = new Leaf($trx));
+			$tree = $merkleTree->add($leaf = new Leaf($trx));
 
-		$tree = $merkleTree->hash();
-
+		$tree = end($tree);
 		end($tree);
-
 		$lastTreeNodeHash = key($tree);
 
 		$lastLeafHash = $leaf->getHash();
 
 		$this->assertTrue($lastTreeNodeHash == Tree::doHash(str_repeat($lastLeafHash, 2)));
-	}
-
-	public function testHashingLimit(){
-
-		$transactions = array(
-
-			"purchase"=>array(
-
-				"sender"=>$this->customer,
-				"recipient"=>$this->retailer,
-				"amount"=>100
-			),
-			"w/h-tax"=>array(
-
-				"sender"=>$this->customer,
-				"recipient"=>$this->taxman,
-				"amount"=>10
-			),
-			"commission"=>array(
-
-				"sender"=>$this->customer,
-				"recipient"=>$this->merchant,
-				"amount"=>5
-			),
-			"freight"=>array(
-
-				"sender"=>$this->customer,
-				"recipient"=>$this->courier,
-				"amount"=>5
-			),
-			"trx-fees"=>array(
-
-				"sender"=>$this->customer,
-				"recipient"=>$this->exchange,
-				"amount"=>1
-			)
-		);
-
-		$merkleTree = new Tree();
-		foreach($transactions as $name=>$trx)
-			$merkleTree->add(new Leaf($trx));
-
-		$branches[] = $merkleTree->hash();
-		while(true){
-
-			$prev = end($branches);
-			$next = $merkleTree->hash();
-			$branches[] = $next;
-			
-			if($prev == $next){//hashing limit attained
-
-				$this->assertTrue(true);
-				break;
-			}
-		}
 	}
 }
