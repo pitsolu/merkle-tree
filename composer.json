@@ -1,5 +1,5 @@
 {
-	"name": "pitsolu/merkle-tree",
+    "name": "pitsolu/merkle-tree",
     "description": "Merkle Tree",
     "license": "MIT",
     "authors": [
@@ -17,7 +17,7 @@
         
         "psr-0": {
 
-            "Strukt\\": "src/"
+            "Merkle\\": "src/"
         }
     }
 }
