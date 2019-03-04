@@ -4,11 +4,11 @@ namespace Merkle;
 
 use Strukt\Util\Json;
 
-class Leaf implements LeafInterface{
+class LeafItem implements LeafInterface{
 
 	private $data;
 
-	public function __construct(Array $data){
+	public function __construct(string $data){
 
 		$this->data = $data;
 	}
@@ -20,6 +20,6 @@ class Leaf implements LeafInterface{
 
 	public function __toString(){
 
-		return Json::encode($this->data);
+		return $this->data;
 	}
 }

@@ -4,3 +4,4 @@ test3.php
 php_errors.log
 ..gitignore.swp
 vendor/
+composer.lock

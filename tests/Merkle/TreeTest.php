@@ -1,8 +1,8 @@
 <?php
 
-use Merkle\{Tree, Leaf};
+use Merkle\{Tree, Leaf, LeafItem};
 
-class MerkleTest extends PHPUnit_Framework_TestCase{
+class MerkleTest extends PHPUnit\Framework\TestCase{
 
 	public function setUp(){
 
@@ -43,6 +43,30 @@ class MerkleTest extends PHPUnit_Framework_TestCase{
 		)));
 
 		$this->assertTrue(count($tree) == 1);
+	}
+
+	public function testLeafItemsAndAlsoFindInconsistency(){
+
+		$slimLyrics = $realSlimShadyLyrics = array(
+
+			"I'm Slim Shady, yes I'm the real Shady",
+			"All you other Slim Shadys are just imitating",
+			"So won't the real Slim Shady please stand up",
+			"Please stand up, please stand up?"
+		);
+
+		$errIdx = 2;
+
+		$slimLyrics[$errIdx] = sprintf("%s ???", $slimLyrics[$errIdx]);
+
+		foreach($realSlimShadyLyrics as $idx=>$lyric){
+
+			$tree = $this->merkleTree->add(new LeafItem($lyric));
+			$xtree = $this->merkleTree->add(new LeafItem($slimLyrics[$idx]));	
+
+			if(key($tree)!=key($xtree))
+				$this->assertEquals($idx, $errIdx); 		
+		}
 	}
 
 	public function testReuseHashOnLastUnevenTransaction(){

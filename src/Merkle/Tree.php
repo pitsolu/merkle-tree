@@ -2,25 +2,31 @@
 
 namespace Merkle;
 
+use Strukt\Event\Event;
+
 class Tree{
 
 	private $nodes;
 	private $leaf_nodes;
-	private $func;
 
 	public function __construct(\Closure $func){
 
 		$this->nodes = [];
 
-		$this->hashRefl = new \ReflectionFunction($func);
+		$this->hash = Event::newEvent($func);
 	}
 
 	public function doHash($data){
 
-		return $this->hashRefl->invoke($data);
+		return $this->hash->apply((string)$data)->exec();
 	}
 
-	public function add(Leaf $data){
+	/**
+	* You know what? You may look at the method below and see something wrong with it,
+	* but don't erase any code, just comment it add your code run the tests and if they fail
+	* just undo your changes. Capeesh?!
+	*/
+	public function add(LeafInterface $data){
 
 		$this->leaf_nodes[$this->doHash((string)$data)] = $data;
 
@@ -37,6 +43,7 @@ class Tree{
 		$temp = [];
 		$temp_non_leaf = [];
 		$itr = new \ArrayIterator($this->nodes);
+
 		while($itr->valid()){
 
 			$temp = [];
