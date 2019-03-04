@@ -3,6 +3,8 @@ Merkle Tree
 
 ## Usage
 
+### Leaf (Array)
+
 ```php
 
 require("vendor/autoload.php");
@@ -65,4 +67,31 @@ $tree = $merkleTree->add(new Merkle\Leaf($transactions["trx-fees"]));
 
 echo(key($tree)); //merle root
 
+```
+
+### Leaf Item (String)
+
+The example below also tests consistency between two trees.
+
+```php
+$slimLyrics = $realSlimShadyLyrics = array(
+
+    "I'm Slim Shady, yes I'm the real Shady",
+    "All you other Slim Shadys are just imitating",
+    "So won't the real Slim Shady please stand up",
+    "Please stand up, please stand up?"
+);
+
+$errIdx = 2;
+
+$slimLyrics[$errIdx] = sprintf("%s ???", $slimLyrics[$errIdx]);
+
+foreach($realSlimShadyLyrics as $idx=>$lyric){
+
+    $tree = $this->merkleTree->add(new Merkle\LeafItem($lyric));
+    $xtree = $this->merkleTree->add(new Merkle\LeafItem($slimLyrics[$idx]));   
+
+    if(key($tree)!=key($xtree))
+        throw new \Exception("Slims lyrics don't match!");        
+}
 ```
