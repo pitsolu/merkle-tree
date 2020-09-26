@@ -4,7 +4,7 @@ use Merkle\{Tree, Leaf, LeafItem};
 
 class MerkleTest extends PHPUnit\Framework\TestCase{
 
-	public function setUp(){
+	public function setUp():void{
 
 		$this->customer = sha1("John Smith");
 		$this->retailer = sha1("John Doe");
@@ -102,6 +102,7 @@ class MerkleTest extends PHPUnit\Framework\TestCase{
 
 		$lastLeafHash = $this->merkleTree->doHash((string)$leaf);
 
-		$this->assertTrue($lastTreeNodeHash == $this->merkleTree->doHash(str_repeat($lastLeafHash, 2)));
+		$this->assertEquals($lastTreeNodeHash, 
+							$this->merkleTree->doHash(str_repeat($lastLeafHash, 2)));
 	}
 }

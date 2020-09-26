@@ -5,3 +5,4 @@ php_errors.log
 ..gitignore.swp
 vendor/
 composer.lock
+.phpunit.result.cache

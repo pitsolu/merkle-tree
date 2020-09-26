@@ -2,7 +2,7 @@
 
 namespace Merkle;
 
-use Strukt\Util\Json;
+use Strukt\Type\Json;
 
 class Leaf implements LeafInterface{
 

@@ -2,7 +2,7 @@
 
 namespace Merkle;
 
-use Strukt\Event\Event;
+use Strukt\Event;
 
 class Tree{
 
@@ -13,7 +13,7 @@ class Tree{
 
 		$this->nodes = [];
 
-		$this->hash = Event::newEvent($func);
+		$this->hash = Event::create($func);
 	}
 
 	public function doHash($data){

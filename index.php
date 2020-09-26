@@ -11,19 +11,6 @@ $taxman = sha1("KRA");
 $courier = sha1("Shiply");
 $exchange = sha1("Coinbase");
 
-// Tree::hashFunc(function($data){
-
-// 	return hash("sha256", hash("sha256", $data));
-// });
-
-Tree::hashFunc(function($data){
-
-	return sha1($data);
-});
-
-
-// echo Merkle\Tree::hash("samweru");
-
 $transactions = array("purchase"=>new Leaf(array(
 
 	"sender"=>$customer,
@@ -55,33 +42,25 @@ $transactions = array("purchase"=>new Leaf(array(
 	"amount"=>1
 )));
 
-$treeA = new Tree();
-$treeB = new Tree();
+$hash = function($data){
+
+	return sha1($data);
+};
+
+$treeA = new Tree($hash);
+$treeB = new Tree($hash);
 
 foreach($transactions as $name=>$trx){
 
-	$treeA->add($trx);
+	$nodeA = $treeA->add($trx);
 
-	if($name != "trx-fees")
-		$treeB->add($trx);
-}
+	if($name != "freight")
+		$nodeB = $treeB->add($trx);
 
-$treeA = $treeA->getTree();
-$treeB = $treeB->getTree();
+	if($nodeA != $nodeB){
 
-// print_r($treeA);
-// print_r($treeB);
-
-while(is_array($treeA)){
-
-	$treeA = reset($treeA);
-	$treeB = reset($treeB);
-
-	print_r(array(array_keys($treeA),array_keys($treeB)));
-
-	// echo "222--";
-	// print_r(array_keys($treeA));
-
-	// echo "111--";
-	// print_r(array_keys($treeB));
+		//print inconsistent trx
+		print_r($trx);
+		break;
+	}
 }
